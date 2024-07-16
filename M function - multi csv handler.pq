@@ -16,7 +16,7 @@ let
       //optional variables: if null then default else user choice
       checkDelimiter      = if delimiter = null then "," else delimiter,
       checkColumns        = if columns = null then null else columns,
-      checkEncoding       = if promoteHeaders = null then 1252 else encoding,
+      checkEncoding       = if encoding = null then 1252 else encoding,
       checkExpandColumns  = if expandColumns  = null then true else expandColumns,
       checkPromoteHeaders = if promoteHeaders = null then true else promoteHeaders,
       
