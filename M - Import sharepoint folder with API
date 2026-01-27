@@ -1,0 +1,35 @@
+let
+    BaseUrl = "https://xtenantx.sharepoint.com/sites/my_site",
+ 
+    Source =
+        List.Buffer(
+            Json.Document(
+                Web.Contents(
+                    BaseUrl,
+                    [
+                        RelativePath = "_api/web/GetFolderByServerRelativeUrl('Folder/Sub Folder')/Files",
+                        Headers = [Accept = "application/json;odata=nometadata"]
+                    ]
+                )
+            )[value]
+        ),
+        Tables =
+            List.Transform(
+                Source,
+                each
+                    Excel.Workbook(
+                        Binary.Buffer(
+                            Web.Contents(
+                                BaseUrl,
+                                [
+                                    RelativePath =
+                                        "_api/web/GetFileByServerRelativeUrl('"
+                                        & _[ServerRelativeUrl]
+                                        & "')/$value"
+                                ]
+                            )
+                        )
+                    )[Data]{0}
+            )
+in
+    Tables
